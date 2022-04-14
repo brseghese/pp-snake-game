@@ -1,5 +1,7 @@
 const canvas = document.getElementById("canvas1");
 const ctx = canvas.getContext("2d");
+canvas.width = 400;
+canvas.height = 400;
 
 let speed = 7;
 let tileCount = 20;
@@ -30,6 +32,8 @@ apple.src = "./assets/apple.png";
 
 const green = new Image();
 green.src = "./assets/background.jpg";
+green.width = 400;
+green.height = 400;
 
 class SnakePart {
   constructor(x, y) {
@@ -122,6 +126,42 @@ function keyDown(event) {
   }
 }
 
+// ---
+
+let touchX = "";
+let touchY = "";
+let touchTreshold = 30;
+
+window.addEventListener("touchstart", (e) => {
+  touchY = e.changedTouches[0].pageY;
+  touchX = e.changedTouches[0].pageX;
+});
+window.addEventListener("touchmove", (e) => {
+  const swipeDistanceX = e.changedTouches[0].pageX - touchX;
+  const swipeDistanceY = e.changedTouches[0].pageY - touchY;
+
+  if (swipeDistanceY < -touchTreshold) {
+    if (yVelocity == 1) return;
+    yVelocity = -1;
+    xVelocity = 0;
+  } else if (swipeDistanceY > touchTreshold) {
+    if (yVelocity == -1) return;
+    yVelocity = 1;
+    xVelocity = 0;
+  }
+  if (swipeDistanceX < -touchTreshold) {
+    if (xVelocity == 1) return;
+    yVelocity = 0;
+    xVelocity = -1;
+  } else if (swipeDistanceX > touchTreshold) {
+    if (xVelocity == -1) return;
+    yVelocity = 0;
+    xVelocity = 1;
+  }
+});
+
+// ---
+
 function isGameOver() {
   let gameOver = false;
 
@@ -203,6 +243,9 @@ function startGame() {
 }
 
 function gameOver() {
+  if (document.fullscreenElement) {
+    document.exitFullscreen();
+  }
   let gameOver = document.getElementById("gameOver");
   gameOver.style.display = "flex";
   let resultadoP = document.getElementById("resultado");
@@ -213,4 +256,16 @@ function restartGame() {
   let gameOver = document.getElementById("gameOver");
   gameOver.style.display = "none";
   location.reload();
+}
+
+function startGameMobile() {
+  let gameStartLayer = document.getElementById("gameStart");
+  gameStartLayer.style.display = "none";
+  if (!document.fullscreenElement) {
+    canvas.requestFullscreen().catch((err) => {
+      alert(`Error, can't enable full-screen mode: ${err.message}`);
+    });
+  } else {
+    document.exitFullscreen();
+  }
 }
