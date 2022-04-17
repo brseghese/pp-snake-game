@@ -48,6 +48,7 @@ Não há necessidade de instalação, clique em [Start Game](https://brseghese.g
 <h3 id="sobre">📍 Sobre</h3>
 
 ✅ HTML **canvas**. <br>
+✅ LocalStorage **record**. <br>
 
 <h3 id="preview">🎥 Preview</h3>
 
