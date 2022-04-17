@@ -311,6 +311,8 @@ function checkLocalStorage() {
   if (localStorage.length) {
     recordStorage = localStorage.getItem("record");
     record = recordStorage;
+  } else {
+    localStorage.setItem("record", "0");
   }
   compareRecord(recordStorage);
 }
